@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Ebook Editable</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        const password = 'samuel'; // Cambia esto por una contraseña segura
+
+        function promptPassword() {
+            const userInput = prompt('Ingresa la contraseña para editar:');
+            if (userInput === password) {
+                enableEditing();
+            } else {
+                alert('Contraseña incorrecta.');
+            }
+        }
+
+        function enableEditing() {
+            tinymce.init({
+                selector: '.editable',
+                menubar: false,
+                toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright | link image',
+                setup: function (editor) {
+                    editor.on('init', function () {
+                        const savedContent = localStorage.getItem('editable-content');
+                        if (savedContent) {
+                            editor.setContent(savedContent);
+                        }
+                    });
+                },
+                save_onsavecallback: function () {
+                    const content = tinymce.get(this.id).getContent();
+                    localStorage.setItem('editable-content', content);
+                }
+            });
+        }
+
+        function disableEditing() {
+            tinymce.remove('.editable'); // Remueve TinyMCE
+        }
+    </script>
+</head>
+<body>
+
+    <header>
+        <h1 id="titulo" contenteditable="false">Descubre Mi Nuevo Ebook</h1>
+        <button id="editButton" onclick="promptPassword()">Editar</button>
+        <button id="saveButton" onclick="saveChanges()" style="display:none;">Guardar Cambios</button>
+    </header>
+
+    <section class="editable">
+        <h2>Sobre el Ebook</h2>
+        <p>Este ebook te guiará a través de [tema del libro] y te proporcionará herramientas útiles para [beneficios].</p>
+    </section>
+
+    <section id="imagen">
+        <img src="C:\Users\samip\Videos\Ebook/bebe-riendo.jpg" alt="bebe-riendo" style="display: block; margin: auto; width: 612px; height: 407px;">
+    </section>
+
+    <section class="editable">
+        <h2>Detalles</h2>
+        <ul>
+            <li><strong>Título:</strong> [Título del ebook]</li>
+            <li><strong>Autor:</strong> [Tu nombre]</li>
+            <li><strong>Páginas:</strong> [Número de páginas]</li>
+            <li><strong>Formato:</strong> PDF</li>
+            <li><strong>Precio:</strong> [Precio]</li>
+        </ul>
+    </section>
+
+    <section>
+        <button id="purchaseButton" onclick="window.location.href='https://go.hotmart.com/A95838811Y?ap=893c'">Comprar Ahora</button>
+   
+    <script src="scripts.js"></script>
+</body>
+</html>
+
